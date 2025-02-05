@@ -18,6 +18,10 @@
     },
     "permissions": [
       "storage",
-      "https://api.openai.com/"
+      "https://api.openai.com/",
+      "clipboardWrite"
+    ],
+    "host_permissions": [
+      "https://*.whatsapp.com/*"
     ]
 }
