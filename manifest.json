@@ -16,6 +16,7 @@
     "background": {
       "service_worker": "config.js"
     },
+    "options_page": "options.html",
     "permissions": [
       "storage",
       "https://api.openai.com/",

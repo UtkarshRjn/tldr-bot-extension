@@ -5,6 +5,9 @@ let apiKey = '';
 chrome.storage.local.get(['enabled', 'openaiKey'], function(result) {
     isEnabled = result.enabled !== undefined ? result.enabled : false;
     apiKey = result.openaiKey;
+    if (!apiKey) {
+        console.log('No API key found. Please set it in extension options.');
+    }
 });
 
 // Listen for messages from popup
@@ -17,8 +20,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function summarizeMessages(messages) {
+    // Check if API key exists
     if (!apiKey) {
-        return 'API key not found. Please check extension configuration.';
+        const message = 'Please set your OpenAI API key in the extension options (Right-click extension icon → Options)';
+        console.log(message);
+        return message;
     }
     
     try {
@@ -49,11 +55,18 @@ async function summarizeMessages(messages) {
             })
         });
 
+        if (!response.ok) {
+            if (response.status === 401) {
+                return 'Invalid API key. Please check your API key in the extension options.';
+            }
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
         const data = await response.json();
         return data.choices[0].message.content;
     } catch (error) {
-        console.error('Error summarizing messages:', error);
-        return 'Failed to generate summary';
+        console.error('Error:', error);
+        return 'Error generating summary. Please check your API key and try again.';
     }
 }
 
