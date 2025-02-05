@@ -1,8 +1,10 @@
 let isEnabled = false;
+let apiKey = '';
 
 // Initialize the state from storage when the content script loads
-chrome.storage.local.get(['enabled'], function(result) {
+chrome.storage.local.get(['enabled', 'openaiKey'], function(result) {
     isEnabled = result.enabled !== undefined ? result.enabled : false;
+    apiKey = result.openaiKey;
 });
 
 // Listen for messages from popup
@@ -14,56 +16,145 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
+async function summarizeMessages(messages) {
+    if (!apiKey) {
+        return 'API key not found. Please check extension configuration.';
+    }
+    
+    try {
+        // Prepare the conversation history in a readable format
+        const conversationText = messages
+            .map(msg => `${msg.author} (${msg.timestamp}): ${msg.message}`)
+            .join('\n');
+
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items."
+                    },
+                    {
+                        role: "user",
+                        content: `Please provide a brief TLDR summary of this conversation:\n\n${conversationText}`
+                    }
+                ],
+                max_tokens: 150
+            })
+        });
+
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('Error summarizing messages:', error);
+        return 'Failed to generate summary';
+    }
+}
+
 // Add click event listener to the document
 document.addEventListener('click', function(e) {
     if (!isEnabled) return; // Skip if feature is disabled
     
-    // Check if element is editable in any way
-    const elementInfo = {
-        tagName: e.target.tagName,
-        nodeName: e.target.nodeName,
-        id: e.target.id,
-        className: e.target.className,
-        value: e.target.value,
-        type: e.target.type,
-        isTextArea: e.target instanceof HTMLTextAreaElement,
-        isInput: e.target instanceof HTMLInputElement
-    };
-    
-    console.log('Element Properties:', elementInfo);
-    
-    // TODO: Improve text input detection and handling:
-    // 1. Add support for dynamic/custom elements (e.g., rich text editors like CKEditor, TinyMCE)
-    // 2. Handle Shadow DOM elements
-    // 3. Support iframe content
-    // 4. Add detection for role="textbox" and contenteditable divs
-    // 5. Consider using MutationObserver for dynamically loaded inputs
     if (
         e.target.tagName === 'INPUT' || 
         e.target.tagName === 'TEXTAREA' ||
         e.target.contentEditable === 'true' ||
-        e.target.isContentEditable
+        e.target.isContentEditable ||
+        (e.target.classList.contains('selectable-text') && e.target.classList.contains('copyable-text'))
     ) {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'P') {
-            e.target.value = 'hello world';
-        } else {
-            // For contenteditable elements
-            e.target.textContent = 'hello world';
-        }
-    }
-
-    if (e.target.classList.contains('selectable-text') && e.target.classList.contains('copyable-text')) {
-        // Create and dispatch an 'input' event
-        e.target.textContent = 'hello world';
+        // Get all message containers
+        const messages = [];
+        const messageElements = document.querySelectorAll('[data-pre-plain-text]');
         
-        // Trigger WhatsApp's input handling
-        const inputEvent = new InputEvent('input', {
-            bubbles: true,
-            cancelable: true,
-            inputType: 'insertText',
-            data: 'hello world'
+        messageElements.forEach(msgElement => {
+            try {
+                // Get author and timestamp from data-pre-plain-text attribute
+                const prePlainText = msgElement.getAttribute('data-pre-plain-text');
+                let author = 'You';
+                let timestamp = '';
+                
+                if (prePlainText) {
+                    // Format is typically "[HH:mm, DD/MM/YYYY] Author: "
+                    const match = prePlainText.match(/\[(.*?)\] (.*?):/);
+                    if (match) {
+                        timestamp = match[1];
+                        author = match[2].trim();
+                    }
+                }
+
+                // Get message text
+                const messageTextElement = msgElement.querySelector('span.selectable-text.copyable-text');
+                const messageText = messageTextElement ? messageTextElement.textContent : '';
+
+                // Only add if we have a message
+                if (messageText) {
+                    messages.push({
+                        author,
+                        message: messageText,
+                        timestamp
+                    });
+                }
+            } catch (error) {
+                console.error('Error parsing message:', error);
+            }
         });
-        e.target.dispatchEvent(inputEvent);
+
+        // Generate and display summary
+        if (messages.length > 0) {
+            summarizeMessages(messages).then(summary => {
+                console.log('Chat Summary (TLDR):', summary);
+                
+                // Create a floating div to show the summary
+                const summaryDiv = document.createElement('div');
+                summaryDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    max-width: 300px;
+                    padding: 15px;
+                    background: #ffffff;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    z-index: 9999;
+                    font-size: 14px;
+                `;
+                summaryDiv.innerHTML = `<strong>TLDR Summary:</strong><br>${summary}`;
+                
+                // Add close button
+                const closeButton = document.createElement('button');
+                closeButton.innerHTML = '×';
+                closeButton.style.cssText = `
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+                    font-size: 18px;
+                    color: #666;
+                `;
+                closeButton.onclick = () => summaryDiv.remove();
+                summaryDiv.appendChild(closeButton);
+                
+                document.body.appendChild(summaryDiv);
+                
+                // Auto-remove after 10 seconds
+                setTimeout(() => {
+                    if (summaryDiv.parentNode) {
+                        summaryDiv.remove();
+                    }
+                }, 10000);
+            });
+        }
+
+        e.preventDefault();
     }
 });
 
