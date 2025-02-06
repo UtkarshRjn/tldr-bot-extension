@@ -1,0 +1,18 @@
+{
+    "scripts": {
+        "dev": "webpack --watch",
+        "build": "webpack"
+    },
+    "name": "tldr-bot",
+    "version": "1.0.0",
+    "description": "## Setup",
+    "main": "background.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11"
+    }
+}
