@@ -20,38 +20,33 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function summarizeMessages(messages) {
-    // Check if API key exists
     if (!apiKey) {
-        const message = 'Please set your OpenAI API key in the extension options (Right-click extension icon → Options)';
+        const message = 'Please set your Gemini API key in the extension options (Right-click extension icon → Options)';
         console.log(message);
         return message;
     }
     
     try {
-        // Prepare the conversation history in a readable format
         const conversationText = messages
             .map(msg => `${msg.author} (${msg.timestamp}): ${msg.message}`)
             .join('\n');
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + apiKey, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: "You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items."
-                    },
-                    {
-                        role: "user",
-                        content: `Please provide a brief TLDR summary of this conversation:\n\n${conversationText}`
-                    }
-                ],
-                max_tokens: 150
+                contents: [{
+                    role: "user",
+                    parts: [{
+                        text: `You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items. Please provide a brief TLDR summary of this conversation:\n\n${conversationText}`
+                    }]
+                }],
+                generationConfig: {
+                    maxOutputTokens: 150,
+                    temperature: 0.7
+                }
             })
         });
 
@@ -59,11 +54,17 @@ async function summarizeMessages(messages) {
             if (response.status === 401) {
                 return 'Invalid API key. Please check your API key in the extension options.';
             }
+            const errorData = await response.json();
+            console.error('API Error:', errorData);
             throw new Error(`API request failed with status ${response.status}`);
         }
 
         const data = await response.json();
-        return data.choices[0].message.content;
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            throw new Error('Unexpected response format from API');
+        }
     } catch (error) {
         console.error('Error:', error);
         return 'Error generating summary. Please check your API key and try again.';

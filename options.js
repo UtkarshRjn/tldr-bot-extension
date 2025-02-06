@@ -8,12 +8,6 @@ document.getElementById('save').addEventListener('click', function() {
         return;
     }
 
-    if (!apiKey.startsWith('sk-')) {
-        document.getElementById('status').textContent = 'Error: Invalid API key format';
-        document.getElementById('status').style.color = 'red';
-        return;
-    }
-
     chrome.storage.local.set({
         openaiKey: apiKey
     }, function() {
