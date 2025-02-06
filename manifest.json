@@ -5,7 +5,7 @@
     "manifest_version": 3,
     "action": {
       "default_popup": "hello.html",
-      "default_icon": "hello_extensions.png"
+      "default_icon": "tldr-bot-icon.png"
     },
     "content_scripts": [
         {
