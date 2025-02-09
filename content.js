@@ -40,7 +40,7 @@ async function summarizeMessages(messages) {
                 contents: [{
                     role: "user",
                     parts: [{
-                        text: `You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items. Please provide a brief TLDR summary of this conversation:\n\n${conversationText}`
+                        text: `You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items, don't include any heading to the generated summary. Please provide a brief TLDR summary of this conversation:\n\n${conversationText}t`
                     }]
                 }],
                 generationConfig: {
@@ -124,23 +124,38 @@ document.addEventListener('click', function(e) {
                 summarizeMessages(messages).then(summary => {
                     console.log('Chat Summary (TLDR):', summary);
                     
-                    // Create a floating div to show the summary
+                    const formatText = (text) => {
+                        return text
+                            // Convert **text** to <strong>text</strong>
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            // Convert * at start of line to bullet point
+                            .replace(/^\* |(\n)\* /g, '$1• ')
+                            // Convert all types of line breaks to <br>
+                            .replace(/\r?\n|\r/g, '<br>');
+                    };
+
                     const summaryDiv = document.createElement('div');
                     summaryDiv.style.cssText = `
                         position: fixed;
-                        top: 20px;
+                        bottom: 20px;
                         right: 20px;
-                        max-width: 300px;
+                        background-color: rgba(0, 0, 0, 0.8);
+                        color: white;
                         padding: 15px;
-                        background: rgba(0, 0, 0, 0.8);
-                        border: 1px solid #444;
                         border-radius: 8px;
-                        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                        max-width: 300px;
                         z-index: 9999;
                         font-size: 14px;
-                        color: #ffffff;
+                        line-height: 1.4;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
                     `;
-                    summaryDiv.innerHTML = `<strong style="color: #ffffff;">TLDR Summary:</strong><br>${summary}`;
+                    const formattedSummary = formatText(summary);
+                    summaryDiv.innerHTML = `
+                        <span style="font-weight: bold; font-size: 16px;">TLDR Summary:</span>
+                        <br>
+                        ${formattedSummary}
+                    `;
+                    console.log(formattedSummary);
                     
                     // Add close button
                     const closeButton = document.createElement('button');
