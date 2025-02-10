@@ -272,10 +272,13 @@ document.addEventListener('keydown', function(e) {
                                 // Set initial content to spaces matching original length
                                 inputField.focus();
                                 inputField.textContent = '';
+
+                                // Get text from summary-content div
+                                const summaryContent = document.getElementById('summary-content').textContent;
                                 
-                                // Then simulate typing character by character
-                                for (let i = 0; i < summary.length; i++) {
-                                    const char = summary[i];
+                                // Simulate typing character by character using the div content
+                                for (let i = 0; i < summaryContent.length; i++) {
+                                    const char = summaryContent[i];
                                     
                                     const keydownEvent = new KeyboardEvent('keydown', {
                                         key: char,
@@ -302,9 +305,8 @@ document.addEventListener('keydown', function(e) {
                                     inputField.dispatchEvent(keydownEvent);
                                     inputField.dispatchEvent(beforeInputEvent);                                    
                                     inputField.dispatchEvent(inputEvent);
-                                    
                                 }
-                                
+
                                 // Click send button after text is inserted
                                 setTimeout(() => {
                                     const sendButton = document.querySelector('button[aria-label="Send"]');
