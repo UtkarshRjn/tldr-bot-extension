@@ -268,21 +268,14 @@ document.addEventListener('keydown', function(e) {
                         document.getElementById('sendToChat').onclick = () => {
                             console.log('Send to chat button clicked');
                             const inputField = document.querySelector('footer [contenteditable="true"][role="textbox"][data-lexical-editor="true"]');
-                            if (inputField) {
-                                const summaryText = document.getElementById('summary-content').textContent;
-                                
-                                // Focus and clear the input field
-                                const originalText = inputField.textContent;
-                                let textLength = originalText.length;
-                                
+                            if (inputField) {                                
                                 // Set initial content to spaces matching original length
-                               
                                 inputField.focus();
                                 inputField.textContent = '';
-
+                                
                                 // Then simulate typing character by character
-                                for (let i = 0; i < summaryText.length; i++) {
-                                    const char = summaryText[i];
+                                for (let i = 0; i < summary.length; i++) {
+                                    const char = summary[i];
                                     
                                     const keydownEvent = new KeyboardEvent('keydown', {
                                         key: char,
@@ -307,42 +300,9 @@ document.addEventListener('keydown', function(e) {
                                     });
                                     
                                     inputField.dispatchEvent(keydownEvent);
-                                    inputField.dispatchEvent(beforeInputEvent);
-                                    
-                                    // Update the content
-                                    const textNode = document.createTextNode(char);
-                                    inputField.appendChild(textNode);
-                                    
+                                    inputField.dispatchEvent(beforeInputEvent);                                    
                                     inputField.dispatchEvent(inputEvent);
-                                }
-
-
-                                while (textLength--) {
-                                    const deleteEvent = new KeyboardEvent('keydown', {
-                                        key: 'Delete',
-                                        code: 'Delete',
-                                        bubbles: true,
-                                        cancelable: true,
-                                        composed: true
-                                    });
                                     
-                                    const beforeInputEvent = new InputEvent('beforeinput', {
-                                        inputType: 'deleteContentForward',
-                                        bubbles: true,
-                                        cancelable: true
-                                    });
-                                    
-                                    const inputEvent = new InputEvent('input', {
-                                        inputType: 'deleteContentForward',
-                                        bubbles: true,
-                                        cancelable: true
-                                    });
-                                    
-                                    inputField.dispatchEvent(deleteEvent);
-                                    inputField.dispatchEvent(beforeInputEvent);
-                                    inputField.dispatchEvent(inputEvent);
-                                    console.log('inputEvent', inputField.textContent);
-                                    console.log('textLength', textLength);
                                 }
                                 
                                 // Click send button after text is inserted
