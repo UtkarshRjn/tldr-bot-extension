@@ -1,11 +1,11 @@
 // Create a class to manage the storage state
 class StorageManager {
-    #isEnabled = false;
+    #isEnabled = true;
     #apiKey = '';
 
     async initialize() {
         const result = await chrome.storage.local.get(['enabled', 'openaiKey']);
-        this.#isEnabled = result.enabled !== undefined ? result.enabled : false;
+        this.#isEnabled = result.enabled !== undefined ? result.enabled : true;
         this.#apiKey = result.openaiKey;
         
         if (!this.#apiKey) {

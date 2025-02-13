@@ -5,14 +5,18 @@
     "manifest_version": 3,
     "action": {
       "default_popup": "public/popup.html",
-      "default_icon": "icons/tldr-bot-icon.png"
+      "default_icon": "icons/tldr-bot-icon.png",
+      "default_icon_disabled": "icons/tldr-bot-icon-disabled.png"
+    },
+    "background": {
+      "service_worker": "src/background.js"
     },
     "content_scripts": [
         {
           "matches": ["https://web.whatsapp.com/*"],
           "js": ["src/content.js"]
         }
-      ],
+    ],
     "permissions": [
       "storage",
       "https://api.openai.com/",
