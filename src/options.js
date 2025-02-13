@@ -9,7 +9,7 @@ document.getElementById('save').addEventListener('click', function() {
     }
 
     chrome.storage.local.set({
-        openaiKey: apiKey
+        deepseekKey: apiKey
     }, function() {
         const status = document.getElementById('status');
         status.textContent = 'Settings saved successfully!';
@@ -21,8 +21,8 @@ document.getElementById('save').addEventListener('click', function() {
 });
 
 // Load saved API key
-chrome.storage.local.get(['openaiKey'], function(result) {
-    if (result.openaiKey) {
-        document.getElementById('apiKey').value = result.openaiKey;
+chrome.storage.local.get(['deepseekKey'], function(result) {
+    if (result.deepseekKey) {
+        document.getElementById('apiKey').value = result.deepseekKey;
     }
 }); 
