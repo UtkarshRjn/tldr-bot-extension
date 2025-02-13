@@ -97,39 +97,32 @@ Promise.all([
      * @returns {Promise<void>}
      */
     const handleTLDRCommand = async (activeElement) => {
-        try {
-            // Prevent multiple popups
-            if (document.querySelector(SELECTORS.POPUP)) {
-                return;
-            }
 
-            const messages = collectMessages();
-            if (!messages?.length) {
-                console.warn('No messages found to summarize');
-                return;
-            }
-
-            const apiKey = storageManager.getState()?.apiKey;
-            if (!apiKey) {
-                throw new Error('API key not found');
-            }
-
-            const summary = await summarizeMessages(messages, apiKey);
-            if (!summary) {
-                throw new Error('Failed to generate summary');
-            }
-
-            const popup = createSummaryPopup(
-                summary,
-                createRegenerateHandler(messages, apiKey),
-                createSendHandler()
-            );
-            
-            document.body.appendChild(popup);
-        } catch (error) {
-            console.error('Error in handleTLDRCommand:', error);
-            // Here you might want to show an error message to the user
+        // Prevent multiple popups
+        if (document.querySelector(SELECTORS.POPUP)) {
+            return;
         }
+
+        const messages = collectMessages();
+        if (!messages?.length) {
+            console.warn('No messages found to summarize');
+            return;
+        }
+
+        const apiKey = storageManager.getState()?.apiKey;
+
+
+        const summary = await summarizeMessages(messages, apiKey);
+
+
+        const popup = await createSummaryPopup(
+            summary,
+            createRegenerateHandler(messages, apiKey),
+            createSendHandler()
+        );
+        
+        document.body.appendChild(popup);
+
     };
 
     // Event listeners

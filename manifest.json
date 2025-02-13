@@ -14,7 +14,8 @@
     "content_scripts": [
         {
           "matches": ["https://web.whatsapp.com/*"],
-          "js": ["src/content.js"]
+          "js": ["src/content.js"],
+          "css": ["public/styles/summary-popup.css"]
         }
     ],
     "permissions": [
@@ -33,7 +34,8 @@
           "src/modules/ui.js",
           "src/modules/messageHandler.js",
           "src/utils/formatters.js",
-          "src/config/constants.js"
+          "src/config/constants.js",
+          "public/summary-popup.html"
         ],
         "matches": ["https://web.whatsapp.com/*"]
       }
