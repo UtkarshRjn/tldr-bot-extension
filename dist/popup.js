@@ -116,13 +116,13 @@ eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPAC
 
 /***/ }),
 
-/***/ "./popup.js":
-/*!******************!*\
-  !*** ./popup.js ***!
-  \******************/
+/***/ "./src/popup.js":
+/*!**********************!*\
+  !*** ./src/popup.js ***!
+  \**********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ \"./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js\");\n__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ \"./node_modules/react-refresh/runtime.js\");\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const toggle = document.getElementById('featureToggle');\n    \n    // Get initial state from storage and update UI\n    chrome.storage.local.get(['enabled'], function(result) {\n        toggle.checked = result.enabled !== undefined ? result.enabled : false;\n    });\n\n    toggle.addEventListener('change', function() {\n        const isEnabled = toggle.checked;\n        // Save state to storage\n        chrome.storage.local.set({ enabled: isEnabled });\n        \n        // Send message to content script\n        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {\n            chrome.tabs.sendMessage(tabs[0].id, {enabled: isEnabled});\n        });\n    });\n});\n\nconst $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;\nconst $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(\n\t$ReactRefreshModuleId$\n);\n\nfunction $ReactRefreshModuleRuntime$(exports) {\n\tif (false) {}\n}\n\nif (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {\n\t$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);\n} else {\n\t$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);\n}\n\n//# sourceURL=webpack://tldr-bot/./popup.js?");
+eval("/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ \"./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js\");\n__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ \"./node_modules/react-refresh/runtime.js\");\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    const toggle = document.getElementById('featureToggle');\n    \n    // Get initial state from storage and update UI\n    chrome.storage.local.get(['enabled'], function(result) {\n        toggle.checked = result.enabled !== undefined ? result.enabled : false;\n    });\n\n    toggle.addEventListener('change', function() {\n        const isEnabled = toggle.checked;\n        // Save state to storage\n        chrome.storage.local.set({ enabled: isEnabled });\n        \n        // Send message to content script\n        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {\n            chrome.tabs.sendMessage(tabs[0].id, {enabled: isEnabled});\n        });\n    });\n});\n\nconst $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;\nconst $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(\n\t$ReactRefreshModuleId$\n);\n\nfunction $ReactRefreshModuleRuntime$(exports) {\n\tif (false) {}\n}\n\nif (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {\n\t$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);\n} else {\n\t$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);\n}\n\n//# sourceURL=webpack://tldr-bot/./src/popup.js?");
 
 /***/ }),
 
@@ -1855,7 +1855,7 @@ eval("\n__webpack_require__(/*! ./url-search-params */ \"./node_modules/core-js-
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__("./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js");
 /******/ 	__webpack_require__("./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ErrorOverlayEntry.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./popup.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/popup.js");
 /******/ 	
 /******/ })()
 ;
