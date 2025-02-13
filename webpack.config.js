@@ -4,10 +4,10 @@ const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: {
-        background: './background.js',
-        content: './content.js',
-        popup: './popup.js',
-        options: './options.js'
+        background: './src/background.js',
+        content: './src/content.js',
+        popup: './src/popup.js',
+        options: './src/options.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

@@ -86,4 +86,20 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.summary-popup {
+  /* ... existing styles ... */
+  line-height: 1.5;
+}
+
+.summary-popup strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.summary-popup br {
+  display: block;
+  margin: 8px 0;
+  content: "";
 } 

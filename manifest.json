@@ -4,16 +4,16 @@
     "description": "Base Level Extension",
     "manifest_version": 3,
     "action": {
-      "default_popup": "hello.html",
-      "default_icon": "tldr-bot-icon.png"
+      "default_popup": "public/tldr-bot.html",
+      "default_icon": "icons/tldr-bot-icon.png"
     },
     "content_scripts": [
         {
-          "matches": ["<all_urls>"],
-          "js": ["content.js"]
+          "matches": ["https://web.whatsapp.com/*"],
+          "js": ["src/content.js"]
         }
       ],
-    "options_page": "options.html",
+    "options_page": "public/options.html",
     "permissions": [
       "storage",
       "https://api.openai.com/",
@@ -21,5 +21,18 @@
     ],
     "host_permissions": [
       "https://*.whatsapp.com/*"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "src/modules/storage.js",
+          "src/modules/api.js",
+          "src/modules/ui.js",
+          "src/modules/messageHandler.js",
+          "src/utils/formatters.js",
+          "src/config/constants.js"
+        ],
+        "matches": ["https://web.whatsapp.com/*"]
+      }
     ]
 }
