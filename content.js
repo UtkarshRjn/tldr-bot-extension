@@ -20,55 +20,35 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 async function summarizeMessages(messages) {
-    if (!apiKey) {
-        const message = 'Please set your Gemini API key in the extension options (Right-click extension icon → Options)';
-        console.log(message);
-        return message;
-    }
+    const apiKey = await chrome.storage.sync.get('apiKey');
     
-    try {
-        const conversationText = messages
-            .map(msg => `${msg.author} (${msg.timestamp}): ${msg.message}`)
-            .join('\n');
-
-        const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' + apiKey, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [{
-                    role: "user",
-                    parts: [{
-                        text: `You are a helpful assistant that provides concise TLDR summaries of conversations. Focus on the main points and action items. Please provide a brief TLDR summary of this conversation:\n\n${conversationText}`
-                    }]
-                }],
-                generationConfig: {
-                    maxOutputTokens: 150,
-                    temperature: 0.7
+    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey.apiKey}`
+        },
+        body: JSON.stringify({
+            model: "deepseek-chat",
+            messages: [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant that summarizes WhatsApp conversations."
+                },
+                {
+                    "role": "user",
+                    "content": `Please summarize these WhatsApp messages: ${messages}`
                 }
-            })
-        });
+            ]
+        })
+    });
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                return 'Invalid API key. Please check your API key in the extension options.';
-            }
-            const errorData = await response.json();
-            console.error('API Error:', errorData);
-            throw new Error(`API request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            throw new Error('Unexpected response format from API');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        return 'Error generating summary. Please check your API key and try again.';
+    if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
     }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
 }
 
 // Add click event listener to the document
