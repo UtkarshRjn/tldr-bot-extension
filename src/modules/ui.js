@@ -1,4 +1,5 @@
 import { formatText } from '../utils/formatters.js';
+import { SELECTORS } from '../config/constants.js';
 
 export const createSummaryPopup = (summary, onRegenerate, onSendToChat) => {
     const summaryDiv = document.createElement('div');
@@ -63,8 +64,8 @@ export const createSummaryPopup = (summary, onRegenerate, onSendToChat) => {
     summaryDiv.appendChild(closeButton);
 
     // Add event listeners
-    summaryDiv.querySelector('#regenerateSummary').onclick = onRegenerate;
-    summaryDiv.querySelector('#sendToChat').onclick = onSendToChat;
+    summaryDiv.querySelector(SELECTORS.REGENERATE_BUTTON).onclick = onRegenerate;
+    summaryDiv.querySelector(SELECTORS.SEND_BUTTON).onclick = onSendToChat;
 
     return summaryDiv;
 }; 

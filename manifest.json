@@ -29,7 +29,8 @@
           "src/modules/api.js",
           "src/modules/ui.js",
           "src/modules/messageHandler.js",
-          "src/utils/formatters.js"
+          "src/utils/formatters.js",
+          "src/config/constants.js"
         ],
         "matches": ["https://web.whatsapp.com/*"]
       }

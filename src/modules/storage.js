@@ -1,23 +1,31 @@
-let isEnabled = false;
-let apiKey = '';
+// Create a class to manage the storage state
+class StorageManager {
+    #isEnabled = false;
+    #apiKey = '';
 
-export const initializeStorage = async () => {
-    const result = await chrome.storage.local.get(['enabled', 'openaiKey']);
-    isEnabled = result.enabled !== undefined ? result.enabled : false;
-    apiKey = result.openaiKey;
-    
-    if (!apiKey) {
-        console.log('No API key found. Please set it in extension options.');
+    async initialize() {
+        const result = await chrome.storage.local.get(['enabled', 'openaiKey']);
+        this.#isEnabled = result.enabled !== undefined ? result.enabled : false;
+        this.#apiKey = result.openaiKey;
+        
+        if (!this.#apiKey) {
+            console.log('No API key found. Please set it in extension options.');
+        }
+        return this.getState();
     }
-    return { isEnabled, apiKey };
-};
 
-export const updateEnabled = (enabled) => {
-    isEnabled = enabled;
-    return chrome.storage.local.set({ enabled: isEnabled });
-};
+    async updateEnabled(enabled) {
+        this.#isEnabled = enabled;
+        return chrome.storage.local.set({ enabled: this.#isEnabled });
+    }
 
-export const getState = () => ({
-    isEnabled,
-    apiKey
-}); 
+    getState() {
+        return {
+            isEnabled: this.#isEnabled,
+            apiKey: this.#apiKey
+        };
+    }
+}
+
+// Export a single instance
+export const storageManager = new StorageManager(); 
