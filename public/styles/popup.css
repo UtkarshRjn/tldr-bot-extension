@@ -88,14 +88,67 @@ body {
   background-color: white;
   transition: .3s;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-input:checked + .toggle-slider {
-  background-color: #128C7E;
+.toggle-slider .toggle-cross,
+.toggle-slider .toggle-tick {
+    position: absolute;
+    z-index: 2;
+    left: 3px;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
 }
 
-input:checked + .toggle-slider:before {
+.toggle-slider .toggle-cross::before,
+.toggle-slider .toggle-cross::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 2px;
+    background-color: #666;
+    border-radius: 1px;
+}
+
+.toggle-slider .toggle-cross::before {
+    transform: rotate(45deg);
+}
+
+.toggle-slider .toggle-cross::after {
+    transform: rotate(-45deg);
+}
+
+.toggle-slider .toggle-tick {
+    width: 6px;
+    height: 10px;
+    border-right: 2px solid #128C7E;
+    border-bottom: 2px solid #128C7E;
+    opacity: 0;
+}
+
+.toggle-switch input:checked + .toggle-slider .toggle-tick {
+    opacity: 1;
+    transform: translateX(23px) rotate(45deg) translateY(3px);
+}
+
+.toggle-switch input:checked + .toggle-slider .toggle-cross {
+    opacity: 0;
+    transform: translateX(16px);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
   transform: translateX(16px);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #128C7E;
 }
 
 .toggle-icon {
@@ -155,4 +208,4 @@ input:checked + .toggle-slider:before {
   font-weight: 600;
   cursor: pointer;
   margin-top: 12px;
-} 
+}
