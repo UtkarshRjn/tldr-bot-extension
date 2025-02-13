@@ -4,7 +4,7 @@
     "description": "Base Level Extension",
     "manifest_version": 3,
     "action": {
-      "default_popup": "public/tldr-bot.html",
+      "default_popup": "public/popup.html",
       "default_icon": "icons/tldr-bot-icon.png"
     },
     "content_scripts": [
@@ -13,7 +13,6 @@
           "js": ["src/content.js"]
         }
       ],
-    "options_page": "public/options.html",
     "permissions": [
       "storage",
       "https://api.openai.com/",

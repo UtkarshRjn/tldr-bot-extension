@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('featureToggle');
+    const toggle = document.getElementById('enableTLDR');
     
     // Get initial state from storage and update UI
     chrome.storage.local.get(['enabled'], function(result) {
