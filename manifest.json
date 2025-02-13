@@ -9,7 +9,7 @@
     },
     "content_scripts": [
         {
-          "matches": ["<all_urls>"],
+          "matches": ["https://web.whatsapp.com/*"],
           "js": ["src/content.js"]
         }
       ],
@@ -21,5 +21,17 @@
     ],
     "host_permissions": [
       "https://*.whatsapp.com/*"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "src/modules/storage.js",
+          "src/modules/api.js",
+          "src/modules/ui.js",
+          "src/modules/messageHandler.js",
+          "src/utils/formatters.js"
+        ],
+        "matches": ["https://web.whatsapp.com/*"]
+      }
     ]
 }
