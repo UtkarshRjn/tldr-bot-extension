@@ -116,13 +116,13 @@ eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPAC
 
 /***/ }),
 
-/***/ "./options.js":
-/*!********************!*\
-  !*** ./options.js ***!
-  \********************/
+/***/ "./src/options.js":
+/*!************************!*\
+  !*** ./src/options.js ***!
+  \************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ \"./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js\");\n__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ \"./node_modules/react-refresh/runtime.js\");\n\n// Save options to chrome.storage\ndocument.getElementById('save').addEventListener('click', function() {\n    const apiKey = document.getElementById('apiKey').value.trim();\n    \n    if (!apiKey) {\n        document.getElementById('status').textContent = 'Error: API key cannot be empty';\n        document.getElementById('status').style.color = 'red';\n        return;\n    }\n\n    chrome.storage.local.set({\n        openaiKey: apiKey\n    }, function() {\n        const status = document.getElementById('status');\n        status.textContent = 'Settings saved successfully!';\n        status.style.color = 'green';\n        setTimeout(function() {\n            status.textContent = '';\n        }, 2000);\n    });\n});\n\n// Load saved API key\nchrome.storage.local.get(['openaiKey'], function(result) {\n    if (result.openaiKey) {\n        document.getElementById('apiKey').value = result.openaiKey;\n    }\n}); \n\nconst $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;\nconst $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(\n\t$ReactRefreshModuleId$\n);\n\nfunction $ReactRefreshModuleRuntime$(exports) {\n\tif (false) {}\n}\n\nif (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {\n\t$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);\n} else {\n\t$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);\n}\n\n//# sourceURL=webpack://tldr-bot/./options.js?");
+eval("/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ \"./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js\");\n__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ \"./node_modules/react-refresh/runtime.js\");\n\n// Save options to chrome.storage\ndocument.getElementById('save').addEventListener('click', function() {\n    const apiKey = document.getElementById('apiKey').value.trim();\n    \n    if (!apiKey) {\n        document.getElementById('status').textContent = 'Error: API key cannot be empty';\n        document.getElementById('status').style.color = 'red';\n        return;\n    }\n\n    chrome.storage.local.set({\n        openaiKey: apiKey\n    }, function() {\n        const status = document.getElementById('status');\n        status.textContent = 'Settings saved successfully!';\n        status.style.color = 'green';\n        setTimeout(function() {\n            status.textContent = '';\n        }, 2000);\n    });\n});\n\n// Load saved API key\nchrome.storage.local.get(['openaiKey'], function(result) {\n    if (result.openaiKey) {\n        document.getElementById('apiKey').value = result.openaiKey;\n    }\n}); \n\nconst $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;\nconst $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(\n\t$ReactRefreshModuleId$\n);\n\nfunction $ReactRefreshModuleRuntime$(exports) {\n\tif (false) {}\n}\n\nif (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {\n\t$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);\n} else {\n\t$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);\n}\n\n//# sourceURL=webpack://tldr-bot/./src/options.js?");
 
 /***/ }),
 
@@ -1855,7 +1855,7 @@ eval("\n__webpack_require__(/*! ./url-search-params */ \"./node_modules/core-js-
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__("./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js");
 /******/ 	__webpack_require__("./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ErrorOverlayEntry.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./options.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/options.js");
 /******/ 	
 /******/ })()
 ;

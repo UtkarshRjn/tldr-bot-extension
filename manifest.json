@@ -4,16 +4,16 @@
     "description": "Base Level Extension",
     "manifest_version": 3,
     "action": {
-      "default_popup": "hello.html",
-      "default_icon": "tldr-bot-icon.png"
+      "default_popup": "public/tldr-bot.html",
+      "default_icon": "icons/tldr-bot-icon.png"
     },
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["content.js"]
+          "js": ["src/content.js"]
         }
       ],
-    "options_page": "options.html",
+    "options_page": "public/options.html",
     "permissions": [
       "storage",
       "https://api.openai.com/",
