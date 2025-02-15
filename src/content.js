@@ -130,12 +130,6 @@ Promise.all([
         const { isEnabled } = storageManager.getState();
         if (!isEnabled) return;
 
-        console.log('Key pressed:', {
-            key: e.key,
-            ctrlKey: e.ctrlKey,
-            shiftKey: e.shiftKey
-        });
-
         if (e.shiftKey) {
             const activeElement = document.activeElement;
             if (activeElement.getAttribute('contenteditable') === 'true' && 

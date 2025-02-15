@@ -42,14 +42,12 @@ export const createSummaryPopup = async (summary, onRegenerate, onSendToChat) =>
     container.innerHTML = template;
     const summaryDiv = container.firstElementChild;
 
-    console.log(summaryDiv)
     // Set the formatted summary content
     const summaryContent = summaryDiv.querySelector('#summary-content');
     summaryContent.innerHTML = formatText(summary);
 
     // Add copy to clipboard functionality
     const copyButton = summaryDiv.querySelector('#copySummary');
-    console.log(copyButton)
     copyButton.onclick = () => onCopy(summaryContent, copyButton);
 
     // Add event listeners
