@@ -6,22 +6,17 @@ import { SELECTORS } from '../config/constants.js';
  * @param {HTMLElement} summaryContent - The element containing the summary text
  */
 export const onCopy = (summaryContent, copyButton) => {
-    
-    console.log('Copying called :)))))))');
-    
-    return () => {
-        const textToCopy = summaryContent.innerText;
-        navigator.clipboard.writeText(textToCopy).then(() => {
+        
+    const textToCopy = summaryContent.innerText;
+    navigator.clipboard.writeText(textToCopy).then(() => {
 
-            alert('Summary copied to clipboard!');
-            copyButton.innerHTML = '✔️ Copied'; 
-            setTimeout(() => {
-                copyButton.innerHTML = '📋 Copy'; 
-            }, 2000);
-        }).catch((err) => {
-            console.error('Failed to copy text: ', err);
-        });
-    };
+        copyButton.innerHTML = '✔️ Copied'; 
+        setTimeout(() => {
+            copyButton.innerHTML = '📋 Copy'; 
+        }, 2000);
+    }).catch((err) => {
+        console.error('Failed to copy text: ', err);
+    });
 };
 
 /**
