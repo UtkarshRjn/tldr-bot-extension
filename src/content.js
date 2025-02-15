@@ -14,7 +14,7 @@ const DELAYS = {
 Promise.all([
     import(chrome.runtime.getURL('src/modules/storage.js')),
     import(chrome.runtime.getURL('src/modules/api.js')),
-    import(chrome.runtime.getURL('src/modules/ui.js')),
+    import(chrome.runtime.getURL('src/modules/summary-popup.js')),
     import(chrome.runtime.getURL('src/modules/messageHandler.js'))
 ]).then(([{ storageManager }, api, ui, messageHandler]) => {
     const { summarizeMessages } = api;
@@ -130,7 +130,13 @@ Promise.all([
         const { isEnabled } = storageManager.getState();
         if (!isEnabled) return;
 
-        if (e.key === 'Shift') {
+        console.log('Key pressed:', {
+            key: e.key,
+            ctrlKey: e.ctrlKey,
+            shiftKey: e.shiftKey
+        });
+
+        if (e.shiftKey) {
             const activeElement = document.activeElement;
             if (activeElement.getAttribute('contenteditable') === 'true' && 
                 activeElement.getAttribute('role') === 'textbox') {
@@ -141,6 +147,16 @@ Promise.all([
                     activeElement.textContent = '';
                     handleTLDRCommand(activeElement);
                 }
+            }
+        }
+        
+        if(e.shiftKey && e.ctrlKey && e.key === 'C'){
+            const summaryContent = document.querySelector(SELECTORS.SUMMARY_CONTENT);
+            const popup = document.querySelector(SELECTORS.POPUP);
+            
+            if (summaryContent && popup) {
+                const copyButton = popup.querySelector('#copySummary');
+                copyButton.onclick();
             }
         }
     });

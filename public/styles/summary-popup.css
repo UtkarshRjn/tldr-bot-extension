@@ -21,7 +21,24 @@
     background: none;
     cursor: pointer;
     font-size: 18px;
-    color: #ffffff;
+    color: #ffffff71;
+}
+
+.tldr-summary-popup .summary-content-container {
+    position: relative;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.tldr-summary-popup .copy-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;  /* Removed the 10px margin */
+    margin-top: 10px;
+    color: #ffffff9c;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .tldr-summary-popup .regenerate-button {
@@ -41,7 +58,6 @@
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 .tldr-summary-popup .summary-title {
@@ -52,4 +68,4 @@
 .tldr-summary-popup .button-container {
     margin-top: 10px;
     text-align: right;
-} 
+}
