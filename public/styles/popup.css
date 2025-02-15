@@ -19,8 +19,8 @@ body {
 }
 
 .logo img {
-  width: 24px;
-  height: 24px;
+  width: 35px;
+  height: 35px;
 }
 
 .logo-text {
@@ -166,16 +166,29 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  flex-wrap: nowrap;
+  gap: 8px; /* Adds spacing between elements */
+  overflow: hidden; /* Prevents unexpected wrapping */
+  white-space: nowrap; /* Ensures everything stays in one line */
+}
+
+.shortcut-row span {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-width: 0; /* Allows text to shrink instead of wrapping */
+}
+
+.shortcut-label {
+  flex-shrink: 0; /* Prevents label from shrinking */
 }
 
 .shortcut-key {
-  background: #f1f5f9;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  white-space: nowrap;
   color: #64748b;
 }
+
 
 .edit-button {
   color: #0ea5e9;
