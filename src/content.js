@@ -14,11 +14,11 @@ const DELAYS = {
 Promise.all([
     import(chrome.runtime.getURL('src/modules/storage.js')),
     import(chrome.runtime.getURL('src/modules/api.js')),
-    import(chrome.runtime.getURL('src/modules/ui.js')),
+    import(chrome.runtime.getURL('src/modules/summary-popup.js')),
     import(chrome.runtime.getURL('src/modules/messageHandler.js'))
 ]).then(([{ storageManager }, api, ui, messageHandler]) => {
     const { summarizeMessages } = api;
-    const { createSummaryPopup } = ui;
+    const { createSummaryPopup , updatePopupPosition } = ui;
     const { collectMessages, sendToWhatsApp } = messageHandler;
 
     // Initialize storage and state
@@ -34,11 +34,11 @@ Promise.all([
     });
 
     /**
- * Creates a handler for regenerating summaries
- * @param {Array} messages - Collection of messages to summarize
- * @param {string} apiKey - API key for the summarization service
- * @returns {Function} Regenerate handler function
- */
+     * Creates a handler for regenerating summaries
+     * @param {Array} messages - Collection of messages to summarize
+     * @param {string} apiKey - API key for the summarization service
+     * @returns {Function} Regenerate handler function
+     */
     const createRegenerateHandler = (messages, apiKey) => async () => {
         const regenerateButton = document.querySelector(SELECTORS.REGENERATE_BUTTON);
         const summaryContent = document.querySelector(SELECTORS.SUMMARY_CONTENT);
@@ -122,6 +122,7 @@ Promise.all([
         );
         
         document.body.appendChild(popup);
+        updatePopupPosition();
 
     };
 
@@ -130,7 +131,7 @@ Promise.all([
         const { isEnabled } = storageManager.getState();
         if (!isEnabled) return;
 
-        if (e.key === 'Shift') {
+        if (e.shiftKey) {
             const activeElement = document.activeElement;
             if (activeElement.getAttribute('contenteditable') === 'true' && 
                 activeElement.getAttribute('role') === 'textbox') {
@@ -143,7 +144,21 @@ Promise.all([
                 }
             }
         }
+        
+        if(e.shiftKey && e.ctrlKey && e.key === 'C'){
+            const summaryContent = document.querySelector(SELECTORS.SUMMARY_CONTENT);
+            const popup = document.querySelector(SELECTORS.POPUP);
+            
+            if (summaryContent && popup) {
+                const copyButton = popup.querySelector('#copySummary');
+                copyButton.onclick();
+            }
+        }
     });
+
+    // Add event listeners
+    window.addEventListener('resize', updatePopupPosition);
+    window.addEventListener('scroll', updatePopupPosition);
 
     // Initialize with delay
     setTimeout(() => {

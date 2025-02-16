@@ -7,7 +7,6 @@ module.exports = {
         background: './src/background.js',
         content: './src/content.js',
         popup: './src/popup.js',
-        options: './src/options.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

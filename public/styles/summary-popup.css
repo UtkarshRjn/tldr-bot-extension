@@ -1,16 +1,15 @@
 .tldr-summary-popup {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    transform: translate(0, 0);
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 15px;
-    border-radius: 8px;
     max-width: 300px;
-    z-index: 9999;
+    z-index: 10000;
     font-size: 14px;
     line-height: 1.4;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
 }
 
 .tldr-summary-popup .close-button {
@@ -21,7 +20,24 @@
     background: none;
     cursor: pointer;
     font-size: 18px;
-    color: #ffffff;
+    color: #ffffff71;
+}
+
+.tldr-summary-popup .summary-content-container {
+    position: relative;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.tldr-summary-popup .copy-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;  /* Removed the 10px margin */
+    margin-top: 10px;
+    color: #ffffff9c;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .tldr-summary-popup .regenerate-button {
@@ -41,7 +57,6 @@
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 .tldr-summary-popup .summary-title {
@@ -52,4 +67,4 @@
 .tldr-summary-popup .button-container {
     margin-top: 10px;
     text-align: right;
-} 
+}
