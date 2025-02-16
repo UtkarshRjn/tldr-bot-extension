@@ -19,6 +19,26 @@ export const onCopy = (summaryContent, copyButton) => {
     });
 };
 
+export const updatePopupPosition = () => {
+
+    const popup = document.querySelector('.tldr-summary-popup');
+    const inputField = document.querySelector('footer [contenteditable="true"][role="textbox"][data-lexical-editor="true"]');
+
+    if (!popup || !inputField) return;
+    
+    const inputRect = inputField.getBoundingClientRect();
+
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+
+    const bottomPosition = window.innerHeight - inputRect.top + 30;     
+    const rightPosition = window.innerWidth - inputRect.right - 60; 
+
+
+    popup.style.bottom = `${bottomPosition}px`;
+    popup.style.right = `${rightPosition}px`;
+}
+
 /**
  * Creates and returns a summary popup element
  * @param {string} summary - The summary text to display
